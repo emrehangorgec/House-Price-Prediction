@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Price Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: orange;
+        }
+    
+        header {
+            background-color: black;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+    
+        main {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: black;
+            color: #fff;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    
+        form {
+            margin-top: 20px;
+        }
+    
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+    
+        select, input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+    
+        button {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 4px;
+        }
+    
+        button:hover {
+            background-color: #555;
+        }
+    
+        #predictedPrice {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+    
+</head>
+<body>
+    <header>
+        <h1>House Price Prediction</h1>
+    </header>
+    <main>
+
+        <form id="predictionForm">
+            <label for="SquareFeet">Square Feet:</label>
+            <input type="number" id="SquareFeet" name="SquareFeet" required>
+
+            <label for="Bedrooms">Bedrooms:</label>
+            <select id="Bedrooms" name="Bedrooms">
+                <option value="" disabled selected>Select number of bedrooms</option>
+                {% for bedroom in bedrooms %}
+                    <option value="{{ bedroom }}">{{ bedroom }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="Bathrooms">Bathrooms:</label>
+            <select id="Bathrooms" name="Bathrooms">
+                <option value="" disabled selected>Select number of bathrooms</option>
+                {% for bathroom in bathrooms %}
+                    <option value="{{ bathroom }}">{{ bathroom }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="Neighborhood">Neighborhood:</label>
+            <select id="Neighborhood" name="Neighborhood">
+                <option value="" disabled selected>Select neighborhood</option>
+                <option value="Rural">Rural</option>
+                <option value="Suburb">Suburb</option>
+                <option value="Urban">Urban</option>
+            </select>
+
+            <label for="YearBuilt">Year Built:</label>
+            <select id="YearBuilt" name="YearBuilt">
+                <option value="" disabled selected>Select year built</option>
+                {% for year in years_built %}
+                    <option value="{{ year }}">{{ year }}</option>
+                {% endfor %}
+            </select>
+
+            <button type="button" onclick="sendData()">Predict Price</button>
+
+            <div id="predictedPrice"></div>
+        </form>
+    </main>
+    <footer>
+        <p>&copy; 2024 House Price Prediction. All rights reserved.</p>
+    </footer>
+    <script>
+        function fetchOptions(endpoint, dropdownId) {
+            fetch(endpoint)
+                .then(response => response.json())
+                .then(data => {
+                    const dropdown = document.getElementById(dropdownId);
+                    dropdown.innerHTML = '<option value="" disabled selected>Select an option</option>';
+                    data.forEach(option => {
+                        const optionElement = document.createElement('option');
+                        optionElement.value = option;
+                        optionElement.textContent = option;
+                        dropdown.appendChild(optionElement);
+                    });
+                });
+        }
+
+        window.onload = function() {
+            fetchOptions('/bedrooms', 'Bedrooms');
+            fetchOptions('/bathrooms', 'Bathrooms');
+            fetchOptions('/neighborhoods', 'Neighborhood');
+            fetchOptions('/years_built', 'YearBuilt');
+        };
+
+        function sendData() {
+            const form = document.getElementById('predictionForm');
+            const formData = new FormData(form);
+
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById("predictedPrice").innerHTML = "Error in prediction. Please try again.";
+                } else {
+                    document.getElementById("predictedPrice").innerHTML = "Predicted Price: $ " + data.price.toFixed(2);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById("predictedPrice").innerHTML = "Error in prediction. Please try again.";
+            });
+        }
+    </script>
+</body>
+</html>
