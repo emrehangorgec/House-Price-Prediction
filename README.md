@@ -19,6 +19,8 @@ The dataset used for training the model can be found on Kaggle: [Housing Price P
 - **YearBuilt**: The year the house was built.
 - **Price**: The price of the house (target variable).
 
+![image](https://github.com/emrehangorgec/House-Price-Prediction/assets/54534150/067c74a8-1ed7-49ce-afe8-5c1c96e0ed46)
+
 ## Usage
 
 1. **Start the Flask application**:
