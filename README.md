@@ -1,6 +1,6 @@
 # House Price Prediction
 
-This project is an application for predicting house prices based on various input features such as square footage, number of bedrooms and bathrooms, neighborhood, and year built. The application is built using Flask for the backend and a machine learning model for predictions.
+This project is an application for predicting house prices based on various input features such as square footage, number of bedrooms and bathrooms, neighborhood and year built. The application is built using Flask for the backend and a machine learning model for predictions.
 
 ## Overview
 
