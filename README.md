@@ -27,9 +27,10 @@ The dataset used for training the model can be found on Kaggle: [Housing Price P
     ```bash
     python main.py
     ```
-
 2. **Open your web browser and navigate to** `http://127.0.0.1:5000` to access the application.
 3. **Fill in the form** with the house details and click "Predict Price" to get the estimated price.
+
+![image](https://github.com/emrehangorgec/House-Price-Prediction/assets/54534150/1c9d6415-31ef-4711-bd51-b7f2d75a336c)
 
 ## Contributing
 
